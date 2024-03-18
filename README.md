@@ -6,3 +6,7 @@ El código está realizado para funcionar bien en el backend, la parte bonita te
 
 El examinado, una vez que concluye el examen, genera un archivo de texto con un encriptado básico de base64, el cual puede ser decriptado en está página.
 https://www.base64decode.org/
+
+
+La intención de este código fue resolver un problema puntual en los exámenes de admisión al Posgrado en Música de la UNAM.
+Úsalo como quieras, ojalá digas de quién te lo copiaste (de mí...).
