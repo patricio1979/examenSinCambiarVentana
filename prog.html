@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Examen de ingreso al Posgrado en Música</h1>
+<div id="message">Estado de la ventana.</div>
+	
+<h2>Datos personales</h2>
+<p>Escribe el área para la cual aplicas.</p>
+<textarea id="area" rows="1" cols="50"></textarea>
+<br />
+<p>Escribe tu nombre completo.</p>
+<textarea id="nombre" rows="1" cols="50"></textarea>
+<br />
+
+<h3>En base al documento impreso, resuelve las preguntas. NO abandones la pantalla, no tienes permitido abandonar esta pantalla mientras estés en el examen. Si llegas a salir se te anulará el examen.</h3>
+
+<textarea id="examen" rows="20" cols="100"></textarea>
+<br />
+<p>Antes de presionar el botón "Concluir examen", ten en cuenta que no puedes editar el envío. Revisa dos veces.</p>
+<div><button onclick="download()">Concluir examen</button></div>
+
+<script>
+	let start = Date.now();
+	let delta = 0;
+	let estadoVentana = true;
+	let cambiosVentana = [];
+
+	setInterval(checkFocus, 200);
+
+	function checkFocus() {
+		
+		let info = document.getElementById("message");
+		if ( document.hasFocus() ) {
+			info.innerHTML = "Actualmente estás en la página (no cambies de pestaña, ventana, ni te vayas a otra aplicación)";
+			if(!estadoVentana){
+				cambiosVentana.push(delta)
+			}
+			estadoVentana = true;
+			delta = 0;
+		} else {
+			info.innerHTML = "CUIDADO, dejaste la ventana del examen y esto está siendo reportado.";
+			delta += 200;
+			//cambiosVentana.push([contador,delta])
+			//console.log(delta)
+			estadoVentana = false;
+		}
+	}
+
+	function download(){
+		let areaP = document.getElementById("area").value, nombreC = document.getElementById("nombre").value, respuestaE = document.getElementById("examen").value;
+		//console.log(areaP,nombreC,respuestaE);
+	    let text = document.getElementById("examen").value;
+	    text = text.replace(/\n/g, "\r\n"); // To retain the Line breaks.
+	    text = text + "\r\n" +JSON.stringify(cambiosVentana);
+	    text = window.btoa(text)
+	    let blob = new Blob([text], { type: "text/plain"});
+	    let anchor = document.createElement("a");
+	    anchor.download = areaP + '_' + nombreC + '_' + "respuestas.txt";
+	    anchor.href = window.URL.createObjectURL(blob);
+	    anchor.target ="_blank";
+	    anchor.style.display = "none"; // just to be safe!
+	    document.body.appendChild(anchor);
+	    anchor.click();
+	    document.body.removeChild(anchor);
+	    console.log(JSON.stringify(cambiosVentana))
+	 }
+</script>
+
+<p id="demo"></p>
+
+</body>
+</html> 
